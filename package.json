@@ -1,0 +1,17 @@
+{
+  "name": "@augu/jsdoc",
+  "description": "Type-safe and powerful way to convert JSDoc to AST, HTML, or Markdown",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "author": "Chris \"August\" Hernandez <august@augu.dev>",
+  "repository": "https://github.com/auguwu/jsdoc",
+  "bugs": "https://github.com/auguwu/jsdoc/issues",
+  "scripts": {
+    "lint": "eslint src --ext .js --fix"
+  },
+  "devDependencies": {
+    "@augu/eslint-config": "1.9.0",
+    "eslint": "7.14.0"
+  }
+}

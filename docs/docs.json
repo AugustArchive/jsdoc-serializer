@@ -1,0 +1,8 @@
+{
+  "library": "javascript",
+  "pages": {
+    "/types": "~/types.md",
+    "/": "~/index.md"
+  },
+  "name": "JSDoc Serializer"
+}
