@@ -20,8 +20,7 @@
  * SOFTWARE.
  */
 
-// const converters = require('./converters');
-// const codegen = require('./codegen');
+const codegen = require('./codegen');
 const util = require('./util');
 
 /**
@@ -34,13 +33,10 @@ module.exports = class JsDocSerializer {
   /**
    * Compiles a string of code to a [AST]
    * @param {string} code The code to convert
-   * @returns {import('./codegen').AST} The structure as a AST
    */
   compile(code) {
-    // const generator = new codegen.Generator();
-    // return generator.compile(code);
-
-    throw new Error('JsDocSerializer.compile has not been implemented');
+    const generator = new codegen.Generator();
+    return generator.compile(code);
   }
 
   /**
@@ -50,10 +46,8 @@ module.exports = class JsDocSerializer {
    * @returns {Promise<void>} Empty promise
    */
   compileToFile(code, filepath) {
-    // const generator = new codegen.Generator();
-    // return generator.compileToFile(code, filepath);
-
-    throw new Error('JsDocSerializer.compileToFile has not been implemented');
+    const generator = new codegen.Generator();
+    return generator.compileToFile(code, filepath);
   }
 
   /**

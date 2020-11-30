@@ -30,6 +30,7 @@ const Types = {
   Async: 'AsyncDeclaration',
   Author: 'AuthorDeclaration',
   Copyright: 'CopyrightDeclaration',
+  Description: 'DescriptionDeclaration',
   Deprecated: 'DeprecatedDeclaration',
   End: 'EndDeclaration',
   Fires: 'FireDeclaration',

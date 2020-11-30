@@ -1,10 +1,7 @@
-const codegen = require('../src/codegen');
-const generator = new codegen.Generator();
+const compiler = require('../src');
+const serializer = new compiler.JSDocSerializer();
 
-generator.on('start', (contents) => console.log('Compiling from text\n', contents));
-generator.on('found', nodes => console.log(`Found ${nodes} match${nodes === 1 ? '' : 'es'} to compile from`));
-
-const nodes = generator.compile(`
+const contents = `
   /**
    * @namespace ns
    * @copyright August &year;
@@ -17,7 +14,6 @@ const nodes = generator.compile(`
    * @author August <https://augu.dev>
    * @param {string} uwu Some uwu text
    * @param {string} [owo='test'] uwu
-   * @deprecated Method has been deprecated since v2
    * @access public
    * @returns {void} Returns \`void\`
    */
@@ -29,15 +25,10 @@ const nodes = generator.compile(`
    * @alias nothing
    * @access private
    * @async
-   * @deprecate
-   * @fires someEvent
-   * @since 0.0.0
-   * @throws TypeError If the given type is not a \`string\`.
-   * @todo The actual call of this function
    * @param {string} uwu Que? Me no habla ingles~
    * @return {Promise<void>} Returns \`Promise<void>\`
    */
   function someOtherGetter() {}
-`);
+`;
 
-console.log(nodes[2]);
+serializer.compileToFile(contents, require('path').join(process.cwd(), 'some', 'other_blob.json'));

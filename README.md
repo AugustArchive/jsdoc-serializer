@@ -21,16 +21,12 @@ const str = `
   }
 `;
 
-serializer.compile(str); //=> JSDoc.AST
+serializer.compile(str); //=> Array<Array<JSDoc.AST>>
 serializer.compileToFile(str, './file.json'); // Promise<void>
 
 // Serialize a relative path directory for it (supports recursion)
 serializer.compileFromDirectory('~/path/to/some/files'); // Promise<JSDoc.FileAST>
 serializer.compileFromFile('~/path/to/file.js'); // Promise<JSDoc.SingleFileAST>
-
-// Convert the AST block to HTML or Markdown
-serializer.astToMarkdown(astBlock);
-serializer.astToHtml(astBlock);
 ```
 
 ## License

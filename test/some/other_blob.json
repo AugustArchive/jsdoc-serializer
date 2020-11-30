@@ -1,0 +1,234 @@
+[
+    [
+        {
+            "parent": null,
+            "type": "StartDeclaration",
+            "children": [
+                {
+                    "parent": "StartDeclaration",
+                    "type": "NamespaceDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "NamespaceDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "CopyrightDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "CopyrightDeclaration"
+                }
+            ]
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "NamespaceDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "CopyrightDeclaration"
+        },
+        {
+            "parent": null,
+            "type": "EndDeclaration"
+        }
+    ],
+    [
+        {
+            "parent": null,
+            "type": "StartDeclaration",
+            "children": [
+                {
+                    "parent": "StartDeclaration",
+                    "type": "DescriptionDeclaration",
+                    "description": "Hi!"
+                },
+                {
+                    "parent": "NamespaceDeclaration",
+                    "type": "AliasDeclaration"
+                },
+                {
+                    "parent": "NamespaceDeclaration",
+                    "type": "AliasDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AuthorDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AuthorDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ParameterDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ParameterDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ParameterDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ParameterDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AccessDeclaration",
+                    "accessor": "public"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AccessDeclaration",
+                    "accessor": "public"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ReturnDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ReturnDeclaration"
+                }
+            ]
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "DescriptionDeclaration",
+            "description": "Hi!"
+        },
+        {
+            "parent": "NamespaceDeclaration",
+            "type": "AliasDeclaration",
+            "alias": "ns.getter"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "AuthorDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "ParameterDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "ParameterDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "AccessDeclaration",
+            "accessor": "public"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "ReturnDeclaration"
+        },
+        {
+            "parent": null,
+            "type": "EndDeclaration"
+        }
+    ],
+    [
+        {
+            "parent": null,
+            "type": "StartDeclaration",
+            "children": [
+                {
+                    "parent": "StartDeclaration",
+                    "type": "DescriptionDeclaration",
+                    "description": "Hola!"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AbstractDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AbstractDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AliasDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AliasDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AccessDeclaration",
+                    "accessor": "private"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AccessDeclaration",
+                    "accessor": "private"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AsyncDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "AsyncDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ParameterDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ParameterDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ReturnDeclaration"
+                },
+                {
+                    "parent": "StartDeclaration",
+                    "type": "ReturnDeclaration"
+                }
+            ]
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "DescriptionDeclaration",
+            "description": "Hola!"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "AbstractDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "AliasDeclaration",
+            "alias": "nothing"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "AccessDeclaration",
+            "accessor": "private"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "AsyncDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "ParameterDeclaration"
+        },
+        {
+            "parent": "StartDeclaration",
+            "type": "ReturnDeclaration"
+        },
+        {
+            "parent": null,
+            "type": "EndDeclaration"
+        }
+    ]
+]

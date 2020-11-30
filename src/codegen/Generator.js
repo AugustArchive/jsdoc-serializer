@@ -23,6 +23,8 @@
 const { JSDOC_REGEX, ACCESSORS } = require('../util/Constants');
 const { ASTNode: Node } = require('./ASTNode');
 const { EventEmitter } = require('events');
+const { existsSync } = require('fs');
+const flatted = require('flatted');
 const util = require('../util');
 const is = require('./is');
 
@@ -62,6 +64,60 @@ module.exports = class Generator extends EventEmitter {
     }
 
     return ast;
+  }
+
+  /**
+   * Compiles the contents and throws it as a file
+   * @param {string} contents The contents
+   * @param {string} filepath The file path
+   */
+  async compileToFile(contents, filepath) {
+    if (!existsSync(filepath)) await util.fs.writeFile(filepath, '[]');
+
+    const compiled = this.compile(contents);
+    const structure = [];
+
+    for (let i = 0; i < compiled.length; i++) {
+      const nodes = compiled[i];
+      const otherStruct = [];
+
+      const getChildNodes = (child) => {
+        const node = {
+          parent: child.parent ? child.parent.type : null,
+          type: child.type
+        };
+
+        if (child.children.length) node.children = child.children.map(getChildNodes);
+
+        if (is.abstract(child)) node.abstract = child.abstract;
+        if (is.access(child)) node.accessor = child.accessor;
+        if (is.description(child)) node.description = child.description;
+
+        return node;
+      };
+
+      nodes.forEach(node => {
+        const n = {
+          parent: node.parent ? node.parent.type : null,
+          type: node.type
+        };
+
+        if (node.children.length) n.children = node.children.map(getChildNodes);
+
+        // this is gonna be a long if statement
+        // todo: make this better?
+        if (is.abstract(node)) n.abstract = node.abstract;
+        if (is.access(node)) n.accessor = node.accessor;
+        if (is.alias(node)) n.alias = is.namespace(node.parent) ? `${node.parent.namespace}.${node.name}` : node.name;
+        if (is.description(node)) n.description = node.description;
+
+        otherStruct.push(n);
+      });
+
+      structure.push(otherStruct);
+    }
+
+    await util.fs.writeFile(filepath, JSON.stringify(structure, null, 4));
   }
 
   // Private API
