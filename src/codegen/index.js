@@ -21,7 +21,7 @@
  */
 
 const { Types, Node } = require('./ASTNode');
-const Generator = require('./Codegen');
+const Generator = require('./Generator');
 
 module.exports = {
   Generator,
