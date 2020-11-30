@@ -24,5 +24,6 @@ const pkg = require('../package.json');
 
 module.exports = {
   JSDocSerializer: require('./Serializer'),
-  version: pkg.version
+  version: pkg.version,
+  is: require('./codegen/is')
 };

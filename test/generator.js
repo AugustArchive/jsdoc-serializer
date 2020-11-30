@@ -1,4 +1,6 @@
 const codegen = require('../src/codegen');
+console.log(require('../src'));
+
 const generator = new codegen.Generator();
 
 generator.on('start', (contents) => console.log('Compiling from text\n', contents));
