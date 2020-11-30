@@ -8,16 +8,19 @@ const nodes = generator.compile(`
   /**
    * Hi!
    * @param {string} uwu Some uwu text
+   * @access public
    * @returns {void} Returns \`void\`
    */
   function getter() {}
 
   /**
    * Hola!
+   * @abstract
+   * @access private
    * @param {string} uwu Que? Me no habla ingles~
    * @return {Promise<void>} Returns \`Promise<void>\`
    */
   function someOtherGetter() {}
 `);
 
-console.log(nodes[0][3].children);
+console.log(nodes);

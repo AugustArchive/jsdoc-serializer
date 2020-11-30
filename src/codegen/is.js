@@ -22,13 +22,13 @@
 
 const { Types, Node } = require('./ASTNode');
 
-module.exports = (() => {
-  const names = Object.keys(Types).map(type => type.toLowerCase());
-  const is = {};
+const names = Object.keys(Types);
+const is = {};
 
-  for (let i = 0; i < names.length; i++) {
-    is[names[i].toLowerCase()] = (value) => value instanceof Node && value.type !== Types[names[i]];
-  }
+for (let i = 0; i < names.length; i++) {
+  const name = names[i];
 
-  return is;
-})();
+  is[name.toLowerCase()] = value => value instanceof Node && value.type === Types[name];
+}
+
+module.exports = is;

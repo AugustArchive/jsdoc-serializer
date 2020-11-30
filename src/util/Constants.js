@@ -26,5 +26,6 @@
 module.exports = {
 
   // Credit: Insberr (https://github.com/Insberr)
-  JSDOC_REGEX: /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\//g
+  JSDOC_REGEX: /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\//g,
+  ACCESSORS: ['public', 'private', 'protected']
 };

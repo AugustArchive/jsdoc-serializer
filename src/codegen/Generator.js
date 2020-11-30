@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
+const { JSDOC_REGEX, ACCESSORS } = require('../util/Constants');
 const { EventEmitter } = require('events');
-const { JSDOC_REGEX } = require('../util/Constants');
 const { Node } = require('./ASTNode');
 const util = require('../util');
 const is = require('./is');
@@ -54,7 +54,7 @@ module.exports = class Generator extends EventEmitter {
       const fileAst = [];
 
       blocks.forEach((item) => {
-        const node = this.getNodeFromText(ast, item.trim());
+        const node = this.getNodeFromText(fileAst, item.trim());
         fileAst.push(node);
       });
 
@@ -79,7 +79,7 @@ module.exports = class Generator extends EventEmitter {
     // Now we reach a list of items
     if (text.startsWith('*')) {
       if (text.indexOf('@') !== -1) {
-        const starting = ast.find(is.start) || null;
+        const starting = ast.find(node => is.start(node)) || null;
         const declare = this.getChildNode(text, starting);
 
         if (starting !== null) starting.push(declare);
@@ -103,8 +103,6 @@ module.exports = class Generator extends EventEmitter {
    * @param {?Node} parent The parent
    */
   getChildNode(text, parent) {
-    // Returns the parent node (which is a sibling node to "StartDeclaration")
-    const declared = Node.from('Declare', parent);
     const contents = text.split('@').pop();
 
     // If there is nothing in the `contents`, let's just return the started declaration
@@ -116,8 +114,23 @@ module.exports = class Generator extends EventEmitter {
     const jsdocType = types.shift();
 
     switch (jsdocType) {
+      case 'abstract':
+      case 'virtual':
+        node = Node.from('Abstract', parent);
+        break;
+
+      case 'access': {
+        const statement = Node.from('Access', parent);
+        const type = types.shift();
+
+        util.assert(ACCESSORS.includes(type), `\`${type}\` was not a valid accessor (${ACCESSORS.join(', ')})`);
+        statement.decorate('accessor', type);
+
+        node = statement;
+      } break;
+
       case 'param': {
-        const statement = Node.from('Param', declared);
+        const statement = Node.from('Param', parent);
         if (types[0].startsWith('{') && types[0].endsWith('}')) {
           const rawName = types.shift();
           const name = rawName
@@ -142,7 +155,7 @@ module.exports = class Generator extends EventEmitter {
 
       case 'returns':
       case 'return': {
-        const statement = Node.from('Return', declared);
+        const statement = Node.from('Return', parent);
         const type = types.shift();
 
         if (type.startsWith('{') && type.endsWith('}')) {
@@ -177,7 +190,7 @@ module.exports = class Generator extends EventEmitter {
       default: break;
     }
 
-    declared.push(node);
-    return declared;
+    if (parent !== null) parent.push(node);
+    return node;
   }
 };
