@@ -140,6 +140,40 @@ module.exports = class Generator extends EventEmitter {
         node = statement;
       } break;
 
+      case 'returns':
+      case 'return': {
+        const statement = Node.from('Return', declared);
+        const type = types.shift();
+
+        if (type.startsWith('{') && type.endsWith('}')) {
+          const name = type
+            .replace(/{/g, '')
+            .replace(/}/g, '');
+
+          if (name.indexOf('>') !== -1 && name.indexOf('>') !== -1) {
+            const actualName = name.split('<').shift();
+            const generic = name.split('<').pop().replace(/>/g, '');
+
+            statement.decorate('typeof', {
+              fullName: name,
+              generic,
+              mdnUrl: '',
+              name: actualName
+            });
+          } else {
+            statement.decorate('typeof', {
+              mdnUrl: '',
+              name
+            });
+          }
+        }
+
+        const description = types.join(' ') || 'None';
+        statement.decorate('description', description);
+
+        node = statement;
+      } break;
+
       default: break;
     }
 
