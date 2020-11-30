@@ -17,6 +17,7 @@ const nodes = generator.compile(`
    * @author August <https://augu.dev>
    * @param {string} uwu Some uwu text
    * @param {string} [owo='test'] uwu
+   * @deprecated Method has been deprecated since v2
    * @access public
    * @returns {void} Returns \`void\`
    */
@@ -28,10 +29,11 @@ const nodes = generator.compile(`
    * @alias nothing
    * @access private
    * @async
+   * @deprecate
    * @param {string} uwu Que? Me no habla ingles~
    * @return {Promise<void>} Returns \`Promise<void>\`
    */
   function someOtherGetter() {}
 `);
 
-console.log(nodes[1][5]);
+console.log(nodes[2][6]);

@@ -185,6 +185,15 @@ module.exports = class Generator extends EventEmitter {
         node = statement;
       } break;
 
+      case 'deprecated':
+      case 'deprecate': {
+        const statement = Node.from('Deprecated', parent);
+        const message = types.join(' ') || 'None';
+
+        if (message !== 'None') statement.decorate('reason', message);
+        node = statement;
+      } break;
+
       case 'param': {
         const statement = Node.from('Param', parent);
         if (types[0].startsWith('{') && types[0].endsWith('}')) {
