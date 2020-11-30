@@ -259,6 +259,22 @@ module.exports = class Generator extends EventEmitter {
         node = statement;
       } break;
 
+      case 'private':
+        node = Node.from('Private', parent);
+        break;
+
+      case 'public':
+        node = Node.from('Public', parent);
+        break;
+
+      case 'protected':
+        node = Node.from('Protected', parent);
+        break;
+
+      case 'readonly':
+        node = Node.from('Readonly', parent);
+        break;
+
       case 'returns':
       case 'return': {
         const statement = Node.from('Return', parent);
@@ -289,6 +305,38 @@ module.exports = class Generator extends EventEmitter {
 
         const description = types.join(' ') || 'None';
         statement.decorate('description', description);
+
+        node = statement;
+      } break;
+
+      case 'since': {
+        const statement = Node.from('Since', parent);
+        statement.decorate('since', types.join(' ') || '0.0.0');
+
+        node = statement;
+      } break;
+
+      case 'static':
+        node = Node.from('Static', parent);
+        break;
+
+      case 'throws': {
+        const statement = Node.from('Throws', parent);
+        const errorType = types.shift() || 'Error';
+        const description = types.join(' ') || 'None';
+
+        statement.decorate('error', {
+          mdnUrl: '',
+          type: errorType
+        });
+
+        statement.decorate('description', description);
+        node = statement;
+      } break;
+
+      case 'todo': {
+        const statement = Node.from('Todo');
+        statement.decorate('todo', types.join(' '));
 
         node = statement;
       } break;

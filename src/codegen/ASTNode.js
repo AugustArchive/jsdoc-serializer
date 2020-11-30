@@ -37,18 +37,15 @@ const Types = {
   Namespace: 'NamespaceDeclaration',
   Param: 'ParameterDeclaration',
   Private: 'PrivateDeclaration',
-  Property: 'PropertyDeclaration',
   Protected: 'ProtectedDeclaration',
   Public: 'PublicDeclaration',
   Readonly: 'ReadonlyDeclaration',
   Return: 'ReturnDeclaration',
-  See: 'SeeDeclaration',
   Since: 'SinceDeclaration',
   Static: 'StaticDeclaration',
   Start: 'StartDeclaration',
   Throws: 'ThrowsDeclaration',
   Todo: 'TodoDeclaration',
-  Typedef: 'TypeDefDeclaration',
   Whitespace: 'WhitespaceDeclaration'
 };
 

@@ -31,10 +31,13 @@ const nodes = generator.compile(`
    * @async
    * @deprecate
    * @fires someEvent
+   * @since 0.0.0
+   * @throws TypeError If the given type is not a \`string\`.
+   * @todo The actual call of this function
    * @param {string} uwu Que? Me no habla ingles~
    * @return {Promise<void>} Returns \`Promise<void>\`
    */
   function someOtherGetter() {}
 `);
 
-console.log(nodes[1][2]);
+console.log(nodes[2]);
