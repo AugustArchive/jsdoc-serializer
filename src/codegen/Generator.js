@@ -201,9 +201,19 @@ module.exports = class Generator extends EventEmitter {
         }
 
         const name = types.shift();
-        const description = types.join(' ');
+        if (name.startsWith('[') && name.endsWith(']')) {
+          const items = name
+            .replace(/\[/g, '')
+            .replace(/]/g, '')
+            .split('=');
 
-        statement.decorate('name', name);
+          statement.decorate('name', items[0]);
+          statement.decorate('default', items[1]);
+        } else {
+          statement.decorate('name', name);
+        }
+
+        const description = types.join(' ');
         statement.decorate('description', description.replace(/- /g, ''));
 
         node = statement;

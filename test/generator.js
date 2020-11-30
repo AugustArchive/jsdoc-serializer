@@ -16,6 +16,7 @@ const nodes = generator.compile(`
    * @alias ns.getter
    * @author August <https://augu.dev>
    * @param {string} uwu Some uwu text
+   * @param {string} [owo='test'] uwu
    * @access public
    * @returns {void} Returns \`void\`
    */
@@ -33,4 +34,4 @@ const nodes = generator.compile(`
   function someOtherGetter() {}
 `);
 
-console.log(nodes[0][2]);
+console.log(nodes[1][5]);
