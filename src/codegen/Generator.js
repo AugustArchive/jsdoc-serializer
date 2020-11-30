@@ -36,7 +36,7 @@ module.exports = class Generator extends EventEmitter {
   /**
    * Compiles a string to an AST string
    * @param {string} contents The contents to compile
-   * @returns {Node[]}
+   * @returns {Node[][]}
    */
   compile(contents) {
     util.assert(typeof contents === 'string', '`contents` was not a string');
@@ -51,10 +51,14 @@ module.exports = class Generator extends EventEmitter {
     const ast = [];
     for (let i = 0; i < matches.length; i++) {
       const blocks = matches[i].split('\n');
+      const fileAst = [];
+
       blocks.forEach((item) => {
         const node = this.getNodeFromText(ast, item.trim());
-        ast.push(node);
+        fileAst.push(node);
       });
+
+      ast.push(fileAst);
     }
 
     return ast;
@@ -74,7 +78,14 @@ module.exports = class Generator extends EventEmitter {
 
     // Now we reach a list of items
     if (text.startsWith('*')) {
-      if (text.indexOf('@') !== -1) return this.getChildNode(text, ast.find(is.start) || null);
+      if (text.indexOf('@') !== -1) {
+        const starting = ast.find(is.start) || null;
+        const declare = this.getChildNode(text, starting);
+
+        if (starting !== null) starting.push(declare);
+        return declare;
+      }
+
       if (text === '') return Node.from('Whitespace');
 
       const starting = ast.find(is.start) || null;
@@ -89,9 +100,50 @@ module.exports = class Generator extends EventEmitter {
   /**
    * Gets a child node with the given text
    * @param {string} text The text
-   * @param {?Node} [parent=null] The parent
+   * @param {?Node} parent The parent
    */
   getChildNode(text, parent) {
-    return Node.from('Public');
+    // Returns the parent node (which is a sibling node to "StartDeclaration")
+    const declared = Node.from('Declare', parent);
+    const contents = text.split('@').pop();
+
+    // If there is nothing in the `contents`, let's just return the started declaration
+    // We shouldn't reach this state at all, but JavaScript is weird sometimes xD
+    if (contents === undefined) return declared;
+
+    let node = undefined; // we'll add this to the `declared`'s children
+    const types = contents.split(' ');
+    const jsdocType = types.shift();
+
+    switch (jsdocType) {
+      case 'param': {
+        const statement = Node.from('Param', declared);
+        if (types[0].startsWith('{') && types[0].endsWith('}')) {
+          const rawName = types.shift();
+          const name = rawName
+            .replace(/{/g, '')
+            .replace(/}/g, '');
+
+          statement.decorate('typeof', {
+            nullable: name.startsWith('?'),
+            mdnUrl: '',
+            name
+          });
+        }
+
+        const name = types.shift();
+        const description = types.join(' ');
+
+        statement.decorate('name', name);
+        statement.decorate('description', description.replace(/- /g, ''));
+
+        node = statement;
+      } break;
+
+      default: break;
+    }
+
+    declared.push(node);
+    return declared;
   }
 };

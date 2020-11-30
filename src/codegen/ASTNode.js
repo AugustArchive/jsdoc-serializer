@@ -39,6 +39,7 @@ const Types = {
   Copyright: 'CopyrightDeclaration',
   Deprecated: 'DeprecatedDeclaration',
   Description: 'DescriptionDeclaration',
+  Declare: 'DeclareStatement',
   Enum: 'EnumDeclaration',
   End: 'EndDeclaration',
   Event: 'EventDeclaration',
@@ -70,7 +71,7 @@ const Types = {
   Namespace: 'NamespaceDeclaration',
   Override: 'OverrideDeclaration',
   Package: 'PackageDeclaration',
-  Param: 'ParamDeclaration',
+  Param: 'ParameterDeclaration',
   Private: 'PrivateDeclaration',
   Property: 'PropertyDeclaration',
   Protected: 'ProtectedDeclaration',
@@ -138,8 +139,6 @@ class Node {
    * @param {Node} node The node
    */
   push(node) {
-    if (this.parent !== null) this.parent.push(node);
-
     this.children.push(node);
     return this;
   }

@@ -1,6 +1,4 @@
 const codegen = require('../src/codegen');
-console.log(require('../src'));
-
 const generator = new codegen.Generator();
 
 generator.on('start', (contents) => console.log('Compiling from text\n', contents));
@@ -12,6 +10,12 @@ const nodes = generator.compile(`
    * @param {string} uwu Some uwu text
    */
   function getter() {}
+
+  /**
+   * Hola!
+   * @param {string} uwu Que? Me no habla ingles~
+   */
+  function someOtherGetter() {}
 `);
 
-console.log(nodes.map(s => s.toString()).join('\n'));
+console.log(nodes);
