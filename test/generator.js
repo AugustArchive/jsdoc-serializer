@@ -6,7 +6,15 @@ generator.on('found', nodes => console.log(`Found ${nodes} match${nodes === 1 ? 
 
 const nodes = generator.compile(`
   /**
+   * @namespace ns
+   * @copyright August &year;
+   */
+  var ns={};
+
+  /**
    * Hi!
+   * @alias ns.getter
+   * @author August <https://augu.dev>
    * @param {string} uwu Some uwu text
    * @access public
    * @returns {void} Returns \`void\`
@@ -16,11 +24,13 @@ const nodes = generator.compile(`
   /**
    * Hola!
    * @abstract
+   * @alias nothing
    * @access private
+   * @async
    * @param {string} uwu Que? Me no habla ingles~
    * @return {Promise<void>} Returns \`Promise<void>\`
    */
   function someOtherGetter() {}
 `);
 
-console.log(nodes);
+console.log(nodes[0][2]);

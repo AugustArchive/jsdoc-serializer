@@ -1,5 +1,8 @@
-# @augu/jsdoc-serializer
+# @augu/jsdoc
 > :rose: **| Simple, powerful, and type-safe JSDoc Serializer**
+
+## Notice
+This library is for [docs.augu.dev](https://github.com/auguwu/docs), so this will serialize what it needs and not every type JSDoc has to support. So, if you want *full support*, you might wanna switch to a different library.
 
 ## Usage
 ```js

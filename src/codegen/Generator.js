@@ -80,7 +80,7 @@ module.exports = class Generator extends EventEmitter {
     if (text.startsWith('*')) {
       if (text.indexOf('@') !== -1) {
         const starting = ast.find(node => is.start(node)) || null;
-        const declare = this.getChildNode(text, starting);
+        const declare = this.getChildNode(text, starting, ast);
 
         if (starting !== null) starting.push(declare);
         return declare;
@@ -101,13 +101,14 @@ module.exports = class Generator extends EventEmitter {
    * Gets a child node with the given text
    * @param {string} text The text
    * @param {?Node} parent The parent
+   * @param {Node[]} ast The current AST tree
    */
-  getChildNode(text, parent) {
+  getChildNode(text, parent, ast) {
     const contents = text.split('@').pop();
 
     // If there is nothing in the `contents`, let's just return the started declaration
     // We shouldn't reach this state at all, but JavaScript is weird sometimes xD
-    if (contents === undefined) return declared;
+    if (contents === undefined) return undefined;
 
     let node = undefined; // we'll add this to the `declared`'s children
     const types = contents.split(' ');
@@ -125,6 +126,61 @@ module.exports = class Generator extends EventEmitter {
 
         util.assert(ACCESSORS.includes(type), `\`${type}\` was not a valid accessor (${ACCESSORS.join(', ')})`);
         statement.decorate('accessor', type);
+
+        node = statement;
+      } break;
+
+      case 'alias': {
+        const statement = Node.from('Alias', parent);
+        const alias = types.shift();
+
+        if (alias.indexOf('.') !== -1) {
+          const [namespace, func] = alias.split('.');
+          const original = parent;
+
+          parent = ast.find(node => is.namespace(node) && node.name !== undefined) || original;
+          statement.decorate('namespace', namespace);
+          statement.decorate('name', func);
+
+          if (parent !== original) statement.setParent(parent);
+        } else {
+          statement.decorate('name', alias);
+        }
+
+        node = statement;
+      } break;
+
+      case 'async':
+        node = Node.from('Async', parent);
+        break;
+
+      case 'author': {
+        const statement = Node.from('Author', parent);
+        statement.decorate('author', types[0]);
+
+        // Due to the nature, we can't do emails
+        // source: https://jsdoc.app/tags-author.html
+        const last = types[types.length - 1];
+        if (last.startsWith('<') && last.endsWith('>')) {
+          const url = last
+            .replace(/</g, '')
+            .replace(/>/g, '');
+
+          statement.decorate('url', url);
+        }
+
+        node = statement;
+      } break;
+
+      case 'copyright': {
+        const statement = Node.from('Copyright', parent);
+
+        const author = types.shift();
+        const year = types.shift().replace(/&year;/g, new Date().getFullYear());
+
+        statement.decorate('author', author);
+        statement.decorate('year', year);
+        statement.decorate('stringify', () => `${author} ©️ ${year}`);
 
         node = statement;
       } break;
