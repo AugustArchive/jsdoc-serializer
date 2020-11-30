@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-const { Types, Node } = require('./ASTNode');
+const { Types, ASTNode: Node } = require('./ASTNode');
 
 const names = Object.keys(Types);
 const is = {};

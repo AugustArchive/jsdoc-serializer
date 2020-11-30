@@ -33,7 +33,6 @@ const Types = {
   Deprecated: 'DeprecatedDeclaration',
   End: 'EndDeclaration',
   Fires: 'FireDeclaration',
-  InheritDoc: 'InheritDocDeclaration',
   License: 'LicenseDeclaration',
   Namespace: 'NamespaceDeclaration',
   Param: 'ParameterDeclaration',
@@ -53,14 +52,14 @@ const Types = {
   Whitespace: 'WhitespaceDeclaration'
 };
 
-class Node {
+class ASTNode {
   /**
    * Statically create a [Node]
    * @param {keyof Types} type The types to create a new AST node
    * @param {?Node} [parent=null] The parent of this AST node
    */
   static from(type, parent) {
-    return new Node(type, parent);
+    return new ASTNode(type, parent);
   }
 
   /**
@@ -129,4 +128,4 @@ class Node {
   }
 }
 
-module.exports = { Types, Node };
+module.exports = { Types, ASTNode };

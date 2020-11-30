@@ -37,4 +37,4 @@ const nodes = generator.compile(`
   function someOtherGetter() {}
 `);
 
-console.log(nodes[2][7].toString());
+console.log(nodes[1][2]);

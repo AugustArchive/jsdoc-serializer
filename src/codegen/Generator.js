@@ -21,8 +21,8 @@
  */
 
 const { JSDOC_REGEX, ACCESSORS } = require('../util/Constants');
+const { ASTNode: Node } = require('./ASTNode');
 const { EventEmitter } = require('events');
-const { Node } = require('./ASTNode');
 const util = require('../util');
 const is = require('./is');
 
@@ -54,7 +54,7 @@ module.exports = class Generator extends EventEmitter {
       const fileAst = [];
 
       blocks.forEach((item) => {
-        const node = this.getNodeFromText(fileAst, item.trim());
+        const node = this.getNodeFromText(fileAst, ast, item.trim());
         fileAst.push(node);
       });
 
@@ -68,10 +68,11 @@ module.exports = class Generator extends EventEmitter {
   /**
    * Gets the node of the given text
    * @param {Node[]} ast The current AST structure
+   * @param {Node[][]} tree The AST tree
    * @param {string} text The text to create a node
    * @returns {Node} The node itself
    */
-  getNodeFromText(ast, text) {
+  getNodeFromText(ast, tree, text) {
     // Starting carriages for JSDoc
     if (text === '/**') return Node.from('Start');
     if (text === '*/') return Node.from('End');
@@ -80,7 +81,7 @@ module.exports = class Generator extends EventEmitter {
     if (text.startsWith('*')) {
       if (text.indexOf('@') !== -1) {
         const starting = ast.find(node => is.start(node)) || null;
-        const declare = this.getChildNode(text, starting, ast);
+        const declare = this.getChildNode(text, starting, ast, tree);
 
         if (starting !== null) starting.push(declare);
         return declare;
@@ -102,8 +103,9 @@ module.exports = class Generator extends EventEmitter {
    * @param {string} text The text
    * @param {?Node} parent The parent
    * @param {Node[]} ast The current AST tree
+   * @param {Node[][]} tree The actual tree
    */
-  getChildNode(text, parent, ast) {
+  getChildNode(text, parent, ast, tree) {
     const contents = text.split('@').pop();
 
     // If there is nothing in the `contents`, let's just return the started declaration
@@ -136,13 +138,12 @@ module.exports = class Generator extends EventEmitter {
 
         if (alias.indexOf('.') !== -1) {
           const [namespace, func] = alias.split('.');
-          const original = parent;
+          const nsParent = tree.filter(nodes =>
+            nodes.find(node => is.namespace(node) && node.namespace === namespace) !== undefined
+          )[0].find(node => is.namespace(node) && node.namespace === namespace);
 
-          parent = ast.find(node => is.namespace(node) && node.name !== undefined) || original;
-          statement.decorate('namespace', namespace);
           statement.decorate('name', func);
-
-          if (parent !== original) statement.setParent(parent);
+          if (nsParent !== null) statement.setParent(nsParent);
         } else {
           statement.decorate('name', alias);
         }
@@ -200,6 +201,26 @@ module.exports = class Generator extends EventEmitter {
 
         util.assert(event !== undefined, '`event` can\'t be undefined in [FireDeclaration] node');
         statement.decorate('event', event);
+
+        node = statement;
+      } break;
+
+      case 'license': {
+        const statement = Node.from('License', parent);
+        const license = types.shift();
+
+        util.assert(license !== undefined, '`license` can\'t be undefined in [LicenseDeclaration] node');
+        statement.decorate('license', license);
+
+        node = statement;
+      } break;
+
+      case 'namespace': {
+        const statement = Node.from('Namespace', parent);
+        const ns = types.shift();
+
+        util.assert(ns !== undefined, '`ns` can\'t be undefined in [NamespaceDeclaration] node');
+        statement.decorate('namespace', ns);
 
         node = statement;
       } break;
