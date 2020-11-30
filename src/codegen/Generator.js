@@ -194,6 +194,16 @@ module.exports = class Generator extends EventEmitter {
         node = statement;
       } break;
 
+      case 'fires': {
+        const statement = Node.from('Fires', parent);
+        const event = types.shift();
+
+        util.assert(event !== undefined, '`event` can\'t be undefined in [FireDeclaration] node');
+        statement.decorate('event', event);
+
+        node = statement;
+      } break;
+
       case 'param': {
         const statement = Node.from('Param', parent);
         if (types[0].startsWith('{') && types[0].endsWith('}')) {

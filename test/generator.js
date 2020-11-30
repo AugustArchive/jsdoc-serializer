@@ -30,10 +30,11 @@ const nodes = generator.compile(`
    * @access private
    * @async
    * @deprecate
+   * @fires someEvent
    * @param {string} uwu Que? Me no habla ingles~
    * @return {Promise<void>} Returns \`Promise<void>\`
    */
   function someOtherGetter() {}
 `);
 
-console.log(nodes[2][6]);
+console.log(nodes[2][7].toString());
