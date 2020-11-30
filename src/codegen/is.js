@@ -21,10 +21,14 @@
  */
 
 const { Types, Node } = require('./ASTNode');
-const Generator = require('./Codegen');
 
-module.exports = {
-  Generator,
-  Types,
-  Node
-};
+module.exports = (() => {
+  const names = Object.keys(Types).map(type => type.toLowerCase());
+  const is = {};
+
+  for (let i = 0; i < names.length; i++) {
+    is[names[i].toLowerCase()] = (value) => value instanceof Node && value.type !== Types[names[i]];
+  }
+
+  return is;
+})();

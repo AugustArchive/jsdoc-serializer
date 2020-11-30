@@ -20,4 +20,78 @@
  * SOFTWARE.
  */
 
-module.exports = class Generator {};
+const { EventEmitter } = require('events');
+const { JSDOC_REGEX } = require('../util/Constants');
+const { Node } = require('./ASTNode');
+const util = require('../util');
+const is = require('./is');
+
+/**
+ * Represents a [Generator] class, which generates all AST nodes
+ * of a string of content available in the given context
+ */
+module.exports = class Generator extends EventEmitter {
+
+  // Public API
+  /**
+   * Compiles a string to an AST string
+   * @param {string} contents The contents to compile
+   * @returns {Node[]}
+   */
+  compile(contents) {
+    util.assert(typeof contents === 'string', '`contents` was not a string');
+
+    this.emit('start', contents);
+
+    const matches = contents.match(JSDOC_REGEX);
+    if (matches === null) return [];
+
+    this.emit('found', matches.length);
+
+    const ast = [];
+    for (let i = 0; i < matches.length; i++) {
+      const blocks = matches[i].split('\n');
+      blocks.forEach((item) => {
+        const node = this.getNodeFromText(ast, item.trim());
+        ast.push(node);
+      });
+    }
+
+    return ast;
+  }
+
+  // Private API
+  /**
+   * Gets the node of the given text
+   * @param {Node[]} ast The current AST structure
+   * @param {string} text The text to create a node
+   * @returns {Node} The node itself
+   */
+  getNodeFromText(ast, text) {
+    // Starting carriages for JSDoc
+    if (text === '/**') return Node.from('Start');
+    if (text === '*/') return Node.from('End');
+
+    // Now we reach a list of items
+    if (text.startsWith('*')) {
+      if (text.indexOf('@') !== -1) return this.getChildNode(text, ast.find(is.start) || null);
+      if (text === '') return Node.from('Whitespace');
+
+      const starting = ast.find(is.start) || null;
+      const node = Node.from('Description', starting);
+      node.decorate('description', text.replace(/\* /g, ''));
+
+      if (starting !== null) starting.push(node);
+      return node;
+    }
+  }
+
+  /**
+   * Gets a child node with the given text
+   * @param {string} text The text
+   * @param {?Node} [parent=null] The parent
+   */
+  getChildNode(text, parent) {
+    return Node.from('Public');
+  }
+};

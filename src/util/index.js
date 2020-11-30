@@ -71,6 +71,15 @@ const util = {
     }
 
     return results;
+  },
+
+  /**
+   * Asserts a boolean and throws an error if it returns false
+   * @param {boolean} assertion The assertion
+   * @param {string} message The message to throw
+   */
+  assert(assertion, message) {
+    if (!assertion) throw new Error(message);
   }
 };
 
